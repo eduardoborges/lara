@@ -2,6 +2,7 @@ import { render } from "react-dom";
 import React from "react";
 
 import App from './App';
+import registerServiceWorker from './registerServiceWorker';
 
 // styles
 import './assets/styles/main.css';
@@ -13,3 +14,5 @@ render(
     <App />,
     document.getElementById('root')
 )
+
+registerServiceWorker();
