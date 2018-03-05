@@ -1,0 +1,15 @@
+.results-view
+
+    .swiper-slide .result-item .title
+        opacity: 0
+        transition: .3s
+
+    .swiper-slide:not(.swiper-slide-active)
+        transform: scale(.8)
+        transition: .3s
+    .swiper-slide-active
+        transition: .3s
+
+    .swiper-slide.swiper-slide-active .result-item .title
+        opacity: 1
+
