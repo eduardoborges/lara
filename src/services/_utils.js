@@ -1,4 +1,4 @@
-
+import _ from 'underscore'
 
 
 /**
@@ -10,7 +10,7 @@
 const mock = function(data, time) {
     return new Promise( resolve => {
         return setTimeout(() => {
-            console.log(data);
+            console.log('[MOCK]: ', data);
             return resolve(data);
         }, time);
     })
@@ -71,9 +71,32 @@ const del = function(table, id){
     write(table, newList);
 }
 
+function makeData() {
+    return _.map(_.range(Math.max(Math.round(Math.random() * 4), 1)), d =>
+        makeSeries()
+    )
+}
+  
+function makeSeries() {
+    const startDate = new Date()
+    // const length = Math.round(Math.random() * 30)
+    const length = 8
+    const max = 50
+    // const max = Math.random() > 0.5 ? 100000 : 10
+    // const multiplier = 10
+    // const multiplier = Math.round((Math.random() * 10) + Math.round(Math.random() * 50))
+    return _.map(_.range(length), d => ({
+        // x: d * multiplier,
+        x: new Date().setDate(startDate.getDay() + 1 * d),
+        y: Math.round(Math.random() * max + Math.round(Math.random() * 50)),
+        r: Math.round(Math.random() * 5)
+    }))
+}
+
 
 export {
     mock,
     read, write,
-    all, get, add, del
+    all, get, add, del,
+    makeData, makeSeries
 }

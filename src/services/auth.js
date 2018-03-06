@@ -9,7 +9,8 @@ class Auth {
 
     static login(login, password){
         return mock({
-            logged: true
+            logged: true,
+            token: '24283745827634875263874572345'
         }, 2000)
     }
 

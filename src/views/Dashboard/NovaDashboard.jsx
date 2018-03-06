@@ -28,7 +28,8 @@ class Nova extends Component {
         const dashboard = {
             id: Date.now(),
             nome: this.state.nome,
-            descricao: this.state.descricao
+            descricao: this.state.descricao,
+            lastUpdate: 0
         };
         dashboardsService.create( dashboard ).then(this.onCreateSuccess)
     }

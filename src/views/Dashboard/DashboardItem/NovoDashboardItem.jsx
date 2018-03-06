@@ -12,6 +12,7 @@ class NovoItem extends Component {
         tipo: 'linhas',
         updateTime: 4,
         atributos: ['nome', 'cpf'],
+        lastUpdate: 0,
         isLoading: false
     }
 
@@ -41,8 +42,8 @@ class NovoItem extends Component {
     handleCreate = (e) => {
         e.preventDefault()
         this.setState({ isLoading: true })
-        const { nome, banco, tabela, tipo, updateTime, atributos } = this.state
-        const dashboard = { id: Date.now(), nome, banco, tabela, tipo, updateTime, atributos, dashboardId: this.props.match.params.id };
+        const { nome, banco, tabela, tipo, updateTime, atributos, lastUpdate } = this.state
+        const dashboard = { id: Date.now(), nome, banco, tabela, tipo, updateTime, atributos, lastUpdate, dashboardId: this.props.match.params.id };
         dashboardItemService.create( dashboard ).then(this.onCreateSuccess)
     }
 
@@ -129,6 +130,7 @@ class NovoItem extends Component {
                                 <option value="pizza">Gráfico de Pizza</option>
                                 <option value="linhas">Gráfico de Linhas</option>
                                 <option value="barras">Gráfico de Barras</option>
+                                <option value="area">Gráfico de Área</option>
                                 <option value="tabela">Tabela</option>
                             </Select>
                           </Control>

@@ -1,7 +1,8 @@
 import { mock } from "./_utils";
 import lockr from "lockr";
+import { filter } from 'underscore';
 
-const TABLE_NAME = 'itens';
+const TABLE_NAME = 'items';
 
 class DashboardItemService {
 
@@ -28,9 +29,10 @@ class DashboardItemService {
     }
 
     static delete(id){
-        mock(
-            lockr.srem(TABLE_NAME, id)
-        ,2000)
+        const newList = filter( lockr.get(TABLE_NAME), item => item.id != id )
+        return mock(
+            lockr.set(TABLE_NAME, newList)
+        ,500)
     }
 }
 

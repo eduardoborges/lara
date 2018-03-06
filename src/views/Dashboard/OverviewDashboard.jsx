@@ -44,17 +44,13 @@ class Overview extends Component {
                                     <HeroBody>
                                         <Columns>
                                             <Column>
-                                                <Title>Dashboard #{index}</Title>
-                                                <Subtitle>Descricao da Dashboard</Subtitle>
+                                                <Title>{dashboard.nome}</Title>
+                                                <Subtitle>{dashboard.descricao}</Subtitle>
                                             </Column>
-                                            <Column hasTextAlign="right" isSize={2}>
-                                                <Tag>A385CS</Tag> 
+                                            <Column hasTextAlign="right" isSize={3}>
+                                                <Tag>{dashboard.id}</Tag> 
                                             </Column>
                                         </Columns>
-                                        
-                                        <p>
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, quas animi eveniet ducimus voluptas nemo.
-                                        </p>
                                         <span><MaterialIcon icon="update" color="#FFF" size="small" /> Última atualização em 23h</span>
                                         <br/>
                                                                          

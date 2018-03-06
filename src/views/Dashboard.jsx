@@ -16,9 +16,12 @@ class Dashboard extends Component {
                 <DashboardHeader />
                 <Switch>
                     <Route exact path="/dashboards" component={OverviewDashboard} />
-                    <Route exact path="/dashboards/:id/detalhes" component={DetalhesDashboard} />
+                    
                     <Route exact path="/dashboards/nova" component={NovaDashboard} />
+                    <Route exact path="/dashboards/:id/detalhes" component={DetalhesDashboard} />
+                    
                     <Route exact path="/dashboards/:id/adicionar/item" component={NovoDashboardItem} />
+                    
                 </Switch>
             </Fragment>
         );

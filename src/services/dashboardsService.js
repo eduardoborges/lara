@@ -1,21 +1,18 @@
 import { mock, all, add, del, get } from "./_utils";
 import lockr from "lockr";
+import { filter } from 'underscore';
 
 class Dashboards {
 
-    constructor(){
-        this.TABLE_NAME = 'dashboards';
-    }
-
     static all(){
         return mock(
-            lockr.get('dashboards')
+            lockr.get('dashboards', [])
         ,2000)
     }
 
     static get(id = 1){
         return mock(
-            lockr.get('dashboards').find( item => item.id == id)
+            lockr.get('dashboards', []).find( item => item.id == id)
         ,2000)
     }
 
@@ -30,15 +27,16 @@ class Dashboards {
     }
 
     static delete(id){
-        mock(
-            lockr.srem('dashboards', id)
-        ,2000)
+        const newList = filter( lockr.get('dashboards'), item => item.id != id )
+        return mock(
+            lockr.set('dashboards', newList)
+        ,500)
     }
 
     static getItems(dashboardID){
-        mock(
-            lockr.get('items').filter( item => item.id == dashboardID )
-        ,2000)
+        return mock(
+            filter( lockr.get('items', []), item => item.dashboardId == dashboardID)
+        ,1000)
     }
 }
 
