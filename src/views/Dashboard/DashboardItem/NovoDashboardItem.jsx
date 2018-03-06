@@ -1,13 +1,17 @@
 import React,{ Component } from 'react';
 import { Section, Container, Button, Title, Breadcrumb, BreadcrumbItem, Label, Field, Control, Input, TextArea, Select } from 'bloomer';
 import { Link } from "react-router-dom";
-import DashboardService from '../../services/dashboards';
+import dashboardItemService from '../../../services/dashBoardsItemsService';
 
 
 class NovoItem extends Component {
     state = {
-        name: '',
-        descricao: '',
+        nome: 'Lista de Pacientes',
+        banco: 'ghu',
+        tabela: 'pacientes',
+        tipo: 'linhas',
+        updateTime: 4,
+        atributos: ['nome', 'cpf'],
         isLoading: false
     }
 
@@ -22,20 +26,30 @@ class NovoItem extends Component {
     }
 
 
+    onChangeMultiple = (e) => {
+        const { name, options } = e.target;
+        let value = [];
+        for (var i = 0, l = options.length; i < l; i++) {
+            if (options[i].selected) {
+                value.push(options[i].value);
+            }
+        }
+        this.setState({ [name]:value })
+    }
+
+
     handleCreate = (e) => {
         e.preventDefault()
         this.setState({ isLoading: true })
-        const dashboard = {
-            nome: this.state.nome,
-            descricao: this.state.descricao
-        };
-        DashboardService.create( dashboard ).then(this.onCreateSuccess)
+        const { nome, banco, tabela, tipo, updateTime, atributos } = this.state
+        const dashboard = { id: Date.now(), nome, banco, tabela, tipo, updateTime, atributos, dashboardId: this.props.match.params.id };
+        dashboardItemService.create( dashboard ).then(this.onCreateSuccess)
     }
 
 
     onCreateSuccess = () => {
         this.setState({ isLoading: false });
-        this.props.history.push('/dashboards');
+        this.props.history.push(`/dashboards/${this.props.match.params.id}/detalhes`);
     }
 
 
@@ -80,33 +94,54 @@ class NovoItem extends Component {
                           
                           <Control>
                             <Label>Banco</Label>
-                            <Select isSize="medium">
-                              <option value="">GHU</option>
+                            <Select isSize="medium"
+                                    name="banco"
+                                    defaultValue={this.state.banco}
+                                    onChange={this.onChange}
+                                    required>
+                                    <option value="" disabled>Selecione...</option>
+                              <option value="ghu">GHU</option>
                             </Select>
                           </Control>
 
                           <Control>
                             <Label>Tabela</Label>
-                            <Select isSize="medium">
-                              <option value="">PACIENTES</option>
-                              <option value="">FARMACIA</option>
-                              <option value="">EMERGENCIA</option>
+                            <Select isSize="medium"
+                                    name="tabela"
+                                    defaultValue={this.state.tabela}
+                                    onChange={this.onChange}
+                                    required>
+                                <option value="" disabled>Selecione...</option>
+                                <option value="pacientes">PACIENTES</option>
+                                <option value="farmacia">FARMACIA</option>
+                                <option value="emergencia">EMERGENCIA</option>
                             </Select>
                           </Control>
 
                           <Control>
                             <Label>Tipo de Exibição</Label>
-                            <Select isSize="medium">
-                              <option value="">Gráfico de Pizza</option>
-                              <option value="">Gráfico de Linhas</option>
-                              <option value="">Gráfico de Barras</option>
-                              <option value="">Tabela</option>
+                            <Select isSize="medium"
+                                    name="tipo"
+                                    defaultValue={this.state.tipo}
+                                    onChange={this.onChange}
+                                    required>
+                                <option value="" disabled>Selecione...</option>
+                                <option value="pizza">Gráfico de Pizza</option>
+                                <option value="linhas">Gráfico de Linhas</option>
+                                <option value="barras">Gráfico de Barras</option>
+                                <option value="tabela">Tabela</option>
                             </Select>
                           </Control>
 
                           <Control>
                             <Label>Tempo de Atualização (em segundos)</Label>
-                            <Input isSize="medium" type="number" min={2} defaultValue={4} />
+                            <Input  isSize="medium"
+                                    type="number"
+                                    name="updateTime"
+                                    defaultValue={this.state.updateTime}
+                                    onChange={this.onChange}
+                                    min={2}
+                                    required />
                           </Control>
 
                         </Field>
@@ -116,11 +151,16 @@ class NovoItem extends Component {
                           <Control>
                             <Label>Campos a serem exibidos no item (Segure Ctrl para selecionar mais de um) </Label>
                             <div class="select is-multiple">
-                            <select multiple size="5">
-                              <option value="Argentina">nome</option>
-                              <option value="Bolivia">data_nascimento</option>
-                              <option value="Brazil">cpf</option>
-                              <option value="Chile">nome_pai</option>
+                            <select size="5"
+                                    name="atributos"
+                                    defaultValue={this.state.atributos}
+                                    onChange={this.onChangeMultiple}
+                                    required
+                                    multiple>
+                                <option value="nome">nome</option>
+                                <option value="data_nascimento">data_nascimento</option>
+                                <option value="cpf">cpf</option>
+                                <option value="nome_pai">nome_pai</option>
                             </select>
                           </div>
                           </Control>
@@ -128,7 +168,6 @@ class NovoItem extends Component {
                         </Field>
 
                         <hr/>
-
 
                         <Field isGrouped>
                             <Control>

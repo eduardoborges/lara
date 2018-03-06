@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import { Section, Container, Button, Title, Breadcrumb, BreadcrumbItem, Label, Field, Control, Input, TextArea } from 'bloomer';
 import { Link } from "react-router-dom";
-import DashboardService from '../../services/dashboards';
+import dashboardsService from '../../services/dashboardsService';
 
 
 class Nova extends Component {
@@ -26,10 +26,11 @@ class Nova extends Component {
         e.preventDefault()
         this.setState({ isLoading: true })
         const dashboard = {
+            id: Date.now(),
             nome: this.state.nome,
             descricao: this.state.descricao
         };
-        DashboardService.create( dashboard ).then(this.onCreateSuccess)
+        dashboardsService.create( dashboard ).then(this.onCreateSuccess)
     }
 
 
@@ -40,7 +41,7 @@ class Nova extends Component {
 
 
     handleCancel = (e) => {
-
+        this.props.history.push('/dashboards');
     }
 
     render() {
@@ -92,7 +93,7 @@ class Nova extends Component {
                                 <Button type="submit" isSize="medium" isColor='primary' isLoading={ this.state.isLoading }>Criar Dashboard</Button>
                             </Control>
                             <Control>
-                                <Button isSize="medium">Cancelar e voltar</Button>
+                                <Button isSize="medium" onClick={this.handleCancel} >Cancelar e voltar</Button>
                             </Control>
                         </Field>
                     </form>

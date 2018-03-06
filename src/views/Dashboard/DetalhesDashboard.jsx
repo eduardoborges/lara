@@ -3,18 +3,32 @@ import { Section, Container, Columns, Column, Title, Subtitle, Tag, Breadcrumb, 
 import { Link } from "react-router-dom";
 import MaterialIcon from "material-icons-react";
 import Chart from "../../components/Chart";
-
+import dashboardsService from "../../services/dashboardsService";
+import lockr from 'lockr';
 
 
 class Detalhes extends Component {
     state = {
-        dashboard: {}
+        dashboard: {},
+        itens: []
+    }
+
+    componentDidMount(){
+        this.getDashboardDetails();
+        // this.getItems();
+    }
+
+    getDashboardDetails = () => {
+        dashboardsService
+        .get(this.props.match.params.id)
+        .then( data => this.setState({ dashboard: data }) )
+    }
+    getItems = () => {
+        dashboardsService.getItems()
     }
 
     render() {
-
-        const dashboardId = this.props.match.params.id;
-
+        const { dashboard } = this.state;
         return (
            <Section>
             <Container>
@@ -23,17 +37,16 @@ class Detalhes extends Component {
                     <ul>
                         <BreadcrumbItem><Link to="/">Home</Link></BreadcrumbItem>
                         <BreadcrumbItem><Link to="/dashboards">Dashboards</Link></BreadcrumbItem>
-                        <BreadcrumbItem isActive><Link to={this.props.location.pathname}>Detalhes da Dashboard #{dashboardId}</Link></BreadcrumbItem>
+                        <BreadcrumbItem isActive><Link to={this.props.location.pathname}>Detalhes da Dashboard #{dashboard.id}</Link></BreadcrumbItem>
                     </ul>
                 </Breadcrumb>
 
 
                 <Columns isMultiline>
                     <Column isSize="3/4">
-                        <Title>Dashboard #1</Title>
-                        <Subtitle>Descricao da Dashboard</Subtitle>
+                        <Title>{dashboard.nome}</Title>
+                        <Subtitle>{dashboard.descricao}</Subtitle>
                         <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, quas animi eveniet ducimus voluptas nemo.
                         </p>
                         <span>Última atualização em 23h</span>
                         <br/>
@@ -41,7 +54,7 @@ class Detalhes extends Component {
                     </Column>
                     <Column hasTextAlign="right">
                         <div className="buttons is-pulled-right">
-                            <Link to={`/dashboards/${dashboardId}/adicionar/item`} className="button is-medium is-primary">Adicionar Itens</Link>
+                            <Link to={`/dashboards/${dashboard.id}/adicionar/item`} className="button is-medium is-primary">Adicionar Itens</Link>
                             <Link to="/" className="button is-medium is-danger">Excluir</Link>
                         </div>
                     </Column>

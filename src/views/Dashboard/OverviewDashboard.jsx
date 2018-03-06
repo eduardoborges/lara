@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import { Section, Container, Button, Columns, Column, Hero, HeroBody, Title, Subtitle, Tag } from 'bloomer';
 import { Link } from "react-router-dom";
 import MaterialIcon from "material-icons-react";
-import DashboardService from '../../services/dashboards';
+import dashboardsService from '../../services/dashboardsService';
 
 class Overview extends Component {
     state = {
-        dashboards: Array.from(new Array(5))
+        dashboards: []
     }
 
     componentWillMount(){
         document.title = "Minhas Dashboards - Lara"
     }
 
-    getDashboards = () => DashboardService.all().then( r => this.setState({dashboards: r}))
+    getDashboards = () => dashboardsService.all().then( data => this.setState({ dashboards: data }) )
 
     render() {
+        this.getDashboards();
         return (
            <Section>
             <Container>
@@ -38,7 +39,7 @@ class Overview extends Component {
 
                     { this.state.dashboards.map( (dashboard, index) => (
                         <Column isSize={6} className="animated fadeInUp" style={{animationDelay: `.${index}s`}}>
-                            <Link to="/dashboards/1/detalhes">
+                            <Link to={`/dashboards/${dashboard.id}/detalhes`}>
                                 <Hero isSize="small" isColor="primary" isBold style={{borderRadius: '3px'}}>
                                     <HeroBody>
                                         <Columns>
@@ -62,6 +63,8 @@ class Overview extends Component {
                             </Link>
                         </Column>
                     ) ) }
+
+                    { this.state.dashboards.length === 0 && <MaterialIcon icon="loading"/> }
                 
                 </Columns>
             </Container>

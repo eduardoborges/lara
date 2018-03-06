@@ -2,10 +2,11 @@ import React, { Component, Fragment } from 'react';
 import { Switch, Route } from "react-router-dom";
 import DashboardHeader from "../components/Header";
 
-import Overview from "./Dashboard/Overview";
-import Detalhes from './Dashboard/Detalhes';
-import Nova from './Dashboard/Nova';
-import NovoItem from './Dashboard/NovoItem';
+import OverviewDashboard from "./Dashboard/OverviewDashboard";
+import DetalhesDashboard from './Dashboard/DetalhesDashboard';
+import NovaDashboard from './Dashboard/NovaDashboard';
+
+import NovoDashboardItem from './Dashboard/DashboardItem/NovoDashboardItem';
 
 class Dashboard extends Component {
     state = {  }
@@ -14,10 +15,10 @@ class Dashboard extends Component {
             <Fragment>
                 <DashboardHeader />
                 <Switch>
-                    <Route exact path="/dashboards" component={Overview} />
-                    <Route exact path="/dashboards/:id/detalhes" component={Detalhes} />
-                    <Route exact path="/dashboards/nova" component={Nova} />
-                    <Route exact path="/dashboards/:id/adicionar/item" component={NovoItem} />
+                    <Route exact path="/dashboards" component={OverviewDashboard} />
+                    <Route exact path="/dashboards/:id/detalhes" component={DetalhesDashboard} />
+                    <Route exact path="/dashboards/nova" component={NovaDashboard} />
+                    <Route exact path="/dashboards/:id/adicionar/item" component={NovoDashboardItem} />
                 </Switch>
             </Fragment>
         );
