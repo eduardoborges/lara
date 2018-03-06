@@ -6,7 +6,7 @@ class System {
 
     static status(){
         return mock({
-            status: 500,
+            status: 200,
             mensage: "System normal e operante"
         }, 2000);
     }

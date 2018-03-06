@@ -1,4 +1,5 @@
 import { mock, all, add, del, get } from "./_utils";
+import lockr from "lockr";
 
 class Dashboards {
 
@@ -8,29 +9,35 @@ class Dashboards {
 
     static all(){
         return mock(
-            all(this.TABLE_NAME)
+            lockr.get('dashboards')
         ,2000)
     }
 
     static get(id = 1){
         return mock(
-            get(this.TABLE_NAME, id)
+            lockr.get('dashboards').find( item => item.id == id)
         ,2000)
     }
 
     static create(dashboard = {}){
         return mock(
-            add(this.TABLE_NAME, dashboard)
+            lockr.sadd('dashboards', dashboard)
         ,2000)
     }
 
     static update(){
-
+        
     }
 
     static delete(id){
         mock(
-            del(this.TABLE_NAME, id)
+            lockr.srem('dashboards', id)
+        ,2000)
+    }
+
+    static getItems(dashboardID){
+        mock(
+            lockr.get('items').filter( item => item.id == dashboardID )
         ,2000)
     }
 }

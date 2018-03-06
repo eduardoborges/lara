@@ -1,38 +1,37 @@
-import { mock, all, add, del, get } from "./_utils";
+import { mock } from "./_utils";
+import lockr from "lockr";
 
-class DashboardItem {
+const TABLE_NAME = 'itens';
 
-    constructor(){
-        this.TABLE_NAME = 'dashboard_items';
-    }
+class DashboardItemService {
 
     static all(){
         return mock(
-            all(this.TABLE_NAME)
+            lockr.get(TABLE_NAME)
         ,2000)
     }
 
     static get(id = 1){
         return mock(
-            get(this.TABLE_NAME, id)
+            lockr.get(TABLE_NAME).find( item => item.id === id)
         ,2000)
     }
 
     static create(dashboard = {}){
         return mock(
-            add(this.TABLE_NAME, dashboard)
+            lockr.sadd(TABLE_NAME, dashboard)
         ,2000)
     }
 
     static update(){
-
+        
     }
 
     static delete(id){
         mock(
-            del(this.TABLE_NAME, id)
+            lockr.srem(TABLE_NAME, id)
         ,2000)
     }
 }
 
-export default Dashboards;
+export default DashboardItemService;
